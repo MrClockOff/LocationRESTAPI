@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LocationRESTAPI.Models
 {
@@ -28,5 +29,10 @@ namespace LocationRESTAPI.Models
         /// User's unique email address
         /// </summary>
         public string Email { get; set; }
+
+        /// <summary>
+        /// User's related locations
+        /// </summary>
+        public List<UserLocation> Locations { get; set; }
     }
 }

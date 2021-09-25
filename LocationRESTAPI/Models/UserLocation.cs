@@ -33,5 +33,15 @@ namespace LocationRESTAPI.Models
         /// Entry date and time
         /// </summary>
         public DateTime DateTime { get; set; }
+
+        /// <summary>
+        /// User's Id related to this location
+        /// </summary>
+        public Guid UserId { get; set; }
+
+        /// <summary>
+        /// User related to this location
+        /// </summary>
+        public User User { get; set; }
     }
 }
