@@ -7,11 +7,15 @@
   <ItemGroup>
     <None Remove="Microsoft.EntityFrameworkCore.InMemory" />
     <None Remove="Models\" />
+    <None Remove="Models\DataTransferObjects\" />
+    <None Remove="Models\Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.10" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Models\DataTransferObjects\" />
+    <Folder Include="Models\Extensions\" />
   </ItemGroup>
 </Project>
