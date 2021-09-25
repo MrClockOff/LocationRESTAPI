@@ -6,8 +6,12 @@
 
   <ItemGroup>
     <None Remove="Microsoft.EntityFrameworkCore.InMemory" />
+    <None Remove="Models\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.10" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
 </Project>
