@@ -13,6 +13,7 @@ namespace LocationRESTAPI.Models
         /// </summary>
         public User()
         {
+            Locations = new List<UserLocation>();
         }
 
         /// <summary>
