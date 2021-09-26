@@ -144,6 +144,19 @@ namespace LocationRESTAPI.Controllers
         }
 
         /// <summary>
+        /// Get every user's current location within specified area
+        /// </summary>
+        /// <param name="latitude"></param>
+        /// <param name="longitude"></param>
+        /// <param name="radius"></param>
+        /// <returns></returns>
+        [HttpGet("users/current")]
+        public Task<ActionResult<IEnumerable<UserLocationDTO>>> GetAllUsersCurrentLocationInArea([FromQuery] double latitude, [FromQuery] double longitude, [FromQuery] double radius)
+        {
+            return Task.FromResult<ActionResult<IEnumerable<UserLocationDTO>>>(NotFound());
+        }
+
+        /// <summary>
         /// Get user with specific Id
         /// </summary>
         /// <param name="userId"></param>
