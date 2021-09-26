@@ -3,6 +3,7 @@ REST API for logging and retrieving user's location
 
 Endpoints:
 
+- for getting all users: GET api/users
 - for posting location for specific user: POST api/location/users/{userId}
 - for getting current location for specific user: GET api/location/users/{userId}/current 
 - for getting location history for specific user: GET api/location/users/{userId}/history 
