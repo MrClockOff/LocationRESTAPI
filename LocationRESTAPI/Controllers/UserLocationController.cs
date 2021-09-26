@@ -121,6 +121,29 @@ namespace LocationRESTAPI.Controllers
         }
 
         /// <summary>
+        /// Get every user current location
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("users/current")]
+        public async Task<ActionResult<IEnumerable<UserLocationDTO>>> GetAllUsersCurrentLocation()
+        {
+            // Get all users with loaded locations
+            var users = await _userLocationContext.Users
+                .Include(user => user.Locations)
+                .ToListAsync();
+
+            // Pick the most recent location for every user
+            var results = users
+                .SelectMany(user => user.Locations
+                    .OrderByDescending(location => location.DateTime)
+                    .Take(1)
+                    .Select(location => location.ToDTO()))
+                .ToList();
+
+            return results;
+        }
+
+        /// <summary>
         /// Get user with specific Id
         /// </summary>
         /// <param name="userId"></param>
