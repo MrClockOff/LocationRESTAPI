@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using LocationRESTAPI.Models;
 using LocationRESTAPI.Models.DataTransferObjects;
 using LocationRESTAPI.Models.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace LocationRESTAPI.Controllers
@@ -62,6 +64,38 @@ namespace LocationRESTAPI.Controllers
 
             var result = userLocation.ToDTO();
             return result;
-        }            
+        }
+
+        /// <summary>
+        /// Get user's current location
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpGet("users/{userId}/current")]
+        public async Task<ActionResult<UserLocationDTO>> GetUserCurrentLocation(Guid userId)
+        {
+            // Check if user exists
+            var user = await _userLocationContext.Users
+                .Include(user => user.Locations)
+                .FirstOrDefaultAsync(user => user.Id.Equals(userId));
+
+            if (user == null)
+            {
+                return NotFound($"User not found (Id: {userId})");
+            }
+
+            // Get user's most recent location
+            var recentLocation = user.Locations
+                .OrderByDescending(location => location.DateTime)
+                .FirstOrDefault();
+
+            if (recentLocation == null)
+            {
+                return NotFound($"User current location not found (Id: {userId}");
+            }
+
+            var result = recentLocation.ToDTO();
+            return result;
+        }
     }
 }
