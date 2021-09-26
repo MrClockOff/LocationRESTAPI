@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LocationRESTAPI.Models;
@@ -43,7 +44,7 @@ namespace LocationRESTAPI.Controllers
         public async Task<ActionResult<UserLocationDTO>> PostUserLocation(Guid userId, [FromBody] LocationDTO location)
         {
             // Check first that user does exist
-            var user = await _userLocationContext.Users.FindAsync(userId);
+            var user = await GetUser(userId);
 
             if (user == null)
             {
@@ -75,9 +76,7 @@ namespace LocationRESTAPI.Controllers
         public async Task<ActionResult<UserLocationDTO>> GetUserCurrentLocation(Guid userId)
         {
             // Check if user exists
-            var user = await _userLocationContext.Users
-                .Include(user => user.Locations)
-                .FirstOrDefaultAsync(user => user.Id.Equals(userId));
+            var user = await GetUser(userId);
 
             if (user == null)
             {
@@ -96,6 +95,41 @@ namespace LocationRESTAPI.Controllers
 
             var result = recentLocation.ToDTO();
             return result;
+        }
+
+        /// <summary>
+        /// Get users's location history
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpGet("users/{userId}/history")]
+        public async Task<ActionResult<IEnumerable<UserLocationDTO>>> GetUserLocationHistory(Guid userId)
+        {
+            // Check if user exists
+            var user = await GetUser(userId);
+
+            if (user == null)
+            {
+                return NotFound($"User not found (Id: {userId})");
+            }
+
+            var result = user.Locations
+                .Select(location => location.ToDTO())
+                .ToList();
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get user with specific Id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        private Task<User> GetUser(Guid userId)
+        {
+            return _userLocationContext.Users
+                .Include(user => user.Locations)
+                .FirstOrDefaultAsync(user => user.Id.Equals(userId));
         }
     }
 }
